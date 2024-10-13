@@ -1,0 +1,33 @@
+<annotation>
+  <folder>20210602</folder>
+  <filename>20210602_08_15_05_000_3lfMUU1rI2fHQ2oTEhRa9UMEY8v2_F_2448_3264.jpg</filename>
+  <source>
+    <database>Unknown</database>
+    <annotation>Unknown</annotation>
+    <image>Unknown</image>
+  </source>
+  <size>
+    <width>2448</width>
+    <height>3264</height>
+    <depth></depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>truck</name>
+    <truncated>0</truncated>
+    <occluded>0</occluded>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>424.9</xmin>
+      <ymin>1410.6</ymin>
+      <xmax>2448.0</xmax>
+      <ymax>3264.0</ymax>
+    </bndbox>
+    <attributes>
+      <attribute>
+        <name>rotation</name>
+        <value>0.0</value>
+      </attribute>
+    </attributes>
+  </object>
+</annotation>

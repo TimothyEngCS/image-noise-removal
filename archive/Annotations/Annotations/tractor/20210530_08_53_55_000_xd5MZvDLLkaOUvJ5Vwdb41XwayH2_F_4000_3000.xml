@@ -1,0 +1,33 @@
+<annotation>
+  <folder>20210530</folder>
+  <filename>20210530_08_53_55_000_xd5MZvDLLkaOUvJ5Vwdb41XwayH2_F_4000_3000.jpg</filename>
+  <source>
+    <database>Unknown</database>
+    <annotation>Unknown</annotation>
+    <image>Unknown</image>
+  </source>
+  <size>
+    <width>3000</width>
+    <height>4000</height>
+    <depth></depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>tractor</name>
+    <truncated>0</truncated>
+    <occluded>0</occluded>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>729.7</xmin>
+      <ymin>811.6</ymin>
+      <xmax>2597.8</xmax>
+      <ymax>3307.4</ymax>
+    </bndbox>
+    <attributes>
+      <attribute>
+        <name>rotation</name>
+        <value>0.0</value>
+      </attribute>
+    </attributes>
+  </object>
+</annotation>
