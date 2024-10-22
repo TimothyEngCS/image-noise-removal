@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>  //include opencv lib
 #include <iostream> //for io operations
 #include <filesystem> // for directory traversal (C++17)
+#include <omp.h> // Include OpenMP
 namespace fs = std::filesystem;
 
 // struct helps to display images and is used as the data for the mouse callback when clicking image left/right side
@@ -146,33 +147,43 @@ int main() {
     // vector for the before and after images
     std::vector<std::pair<cv::Mat, cv::Mat>> image_pairs;
 
-    // Iterate over all image files in the input directory
+    // Collect all image file paths and their filenames for OpenMP parallelization
+    std::vector<std::string> img_paths;
+    std::vector<std::string> img_filenames;
     for (const auto& entry : std::filesystem::directory_iterator(input_dir)) {
         if (entry.is_regular_file()) {
-            std::string img_path = entry.path().string(); // Get the path of the current image
-            std::string output_path = output_dir + entry.path().filename().string(); // Save with the same file name in output folder
+            img_paths.push_back(entry.path().string());
+            img_filenames.push_back(entry.path().filename().string());  // Collect filenames once
+        }
+    }
 
-            std::cout << "Processing: " << img_path << std::endl;
+    // Process images in parallel using OpenMP
+    #pragma omp parallel for shared(image_pairs)
+    for (int i = 0; i < img_paths.size(); ++i) {
+        std::cout << "Processing: " << img_paths[i] << std::endl;
 
-            // Load the image
-            cv::Mat img = cv::imread(img_path);
-            if (img.empty()) { // Check if there was an error 
-                std::cerr << "Error: Could not open image file " << img_path << std::endl;
-                continue;
-            }
-
-            // Apply Gaussian blur
-            cv::Mat blurred_img = apply_gaussian_blur(img, kernel);
-            cv::Mat blurred_img_8u; // // Convert blurred image to uint8 for saving
-            blurred_img.convertTo(blurred_img_8u, CV_8UC3); // Convert back to 8-bit unsigned format
-            
-            // Save the pair for displaying to user
-            image_pairs.push_back({img, blurred_img_8u});
-            // Save the blurred image to output folder
-            cv::imwrite(output_path, blurred_img_8u);
-            std::cout << "Saved to: " << output_path << std::endl;
+        // Load the image
+        cv::Mat img = cv::imread(img_paths[i]);
+        if (img.empty()) {
+            std::cerr << "Error: Could not open image file " << img_paths[i] << std::endl;
+            continue;
         }
 
+        // Apply Gaussian blur
+        cv::Mat blurred_img = apply_gaussian_blur(img, kernel);
+        cv::Mat blurred_img_8u;
+        blurred_img.convertTo(blurred_img_8u, CV_8UC3); // Convert to 8-bit unsigned format
+
+        // Save the blurred image to the output folder
+        std::string output_path = output_dir + img_filenames[i];  // Use pre-collected filename
+        cv::imwrite(output_path, blurred_img_8u);
+        std::cout << "Saved to: " << output_path << std::endl;
+
+        // Add to image_pairs vector (critical section for thread safety)
+        #pragma omp critical
+        {
+            image_pairs.push_back({img, blurred_img_8u});
+        }
     }
 
     // If no images were processed, exit
