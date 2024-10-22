@@ -130,12 +130,17 @@ void display_images_side_by_side(const std::vector<std::pair<cv::Mat, cv::Mat>>&
     cv::destroyAllWindows();  // Close all OpenCV windows
 }
 
-int main() {
+int main(int argc, char** argv) {
     //define input and output directories - potentially better to be arguments to running the program. 
-    std::string input_dir = "/path/to/input/folder/";   // Update this path to your input folder
-    std::string output_dir = "/path/to/output/folder/"; // Update this path to your output folder
-    input_dir = "images/test/input/";
-    output_dir = "images/test/output/";
+    std::string input_dir = "images/test/input/";  // Update this path to your input folder
+    std::string output_dir = "images/test/output/"; // Update this path to your output folder
+    
+    // Check if input and output folder paths are provided, use those
+    if (argc >= 3) { 
+        // Set input and output directories from command-line arguments
+        input_dir = argv[1]; 
+        output_dir = argv[2]; 
+    }
 
     //define kernel size and standard deviation -- affects blur strength
     int kernel_sz = 5;  //larger value for more blur
@@ -152,8 +157,12 @@ int main() {
     std::vector<std::string> img_filenames;
     for (const auto& entry : std::filesystem::directory_iterator(input_dir)) {
         if (entry.is_regular_file()) {
-            img_paths.push_back(entry.path().string());
-            img_filenames.push_back(entry.path().filename().string());  // Collect filenames once
+            std::string file_ext = entry.path().extension().string();
+            // Only process jpg files
+            if (file_ext == ".jpg") {
+                img_paths.push_back(entry.path().string());
+                img_filenames.push_back(entry.path().filename().string());  // Collect filenames once
+            }
         }
     }
 
@@ -198,4 +207,4 @@ int main() {
 }
 
 //install open:cv
-///compile with clang++ -std=c++17 gaussian_speed.cpp -I/usr/local/Cellar/opencv/4.10.0_11/include/opencv4 -L/usr/local/Cellar/opencv/4.10.0_11/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -o gaussian_speed
+///compile with macOS: clang++ -Xpreprocessor -fopenmp -std=c++17 gaussian_speed.cpp -o gaussian_speed `pkg-config --cflags --libs opencv4` -I/usr/local/opt/libomp/include -L/usr/local/opt/libomp/lib -lomp
