@@ -2,37 +2,32 @@
 
 ## Requirements:
 
-### Python Implementation:
-- `mpi4py` from MPI
+### Python for displaying images:
+- `matplotlib` for images 
 - `Pillow` for displaying images
 
-### C++ Implementation:
-- **OpenCV** (we use it for displaying images)
+### C++ for gaussian blur code: 
 - **OpenMP** support (via `libomp` on macOS)
+- MinGW or WSL support for windows 
 - C++17 compiler (such as `clang++` or `g++`)
+- dependency on stb_image.h and stb_image_write.h to process jpeg in c++
+- these are from https://github.com/nothings/stb/tree/master
 
-## Compiling the C++ Version:
-
-### For Linux/macOS:
+## Compiling executable for blur: 
 ```
-clang++ -Xpreprocessor -fopenmp -std=c++17 gaussian_speed.cpp -o gaussian_speed `pkg-config --cflags --libs opencv4` -I/usr/local/opt/libomp/include -L/usr/local/opt/libomp/lib -lomp
+g++-14 -std=c++17 -fopenmp gaussian.cpp -o gaussian
 ```
-
-### For windows:
-```
-g++ -fopenmp -std=c++17 -Ipath_to_opencv\include -Lpath_to_opencv\x64\mingw\lib gaussian_speed.cpp -o gaussian_speed -lopencv_core452 -lopencv_imgcodecs452 -lopencv_highgui452 -lopencv_imgproc452
-```
-
+ 
 ## running
  - need to use .jpg files
  - specficy input folder with your .jpg files and output folder to put the blurred .jpg files
 
-### python:
+### running with python wrapper to display images:
 ```
-mpiexec -n <number_of_processes> python gaussian_mpi.py <input_dir> <output_dir>
+python blur_wrapper.py path/to/input_dir/ path/to/output_dir/
 ```
 
-### running c++:
+### running just images blur c++:
 ```
 ./gaussian_speed relative-path-input-images relative-path-output-images
 ```

@@ -1,4 +1,5 @@
 *.jpg
 
-#ignore executable
+#ignore executables
 gaussian_speed
+gaussian

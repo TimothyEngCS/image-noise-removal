@@ -44,7 +44,7 @@ def main():
     image_np = np.array(image)  # Convert the image to a numpy array
 
     # Define the Gaussian kernel size and standard deviation
-    kernel_size = 8  # Larger kernel for stronger blur
+    kernel_size = 3  # Larger kernel for stronger blur
     sigma = 4.0       # Increase sigma for more pronounced blur
 
     # Generate the Gaussian kernel
