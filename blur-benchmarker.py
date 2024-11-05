@@ -120,10 +120,11 @@ def main():
     for name, script_path in implementations_to_run.items():
         output_dir_for_implementation = os.path.join(args.output_path, name)
         os.makedirs(output_dir_for_implementation, exist_ok=True)
-        
+
         is_cpp = script_path.endswith(".cpp")
         if is_cpp:
-            # Pass the script_path for C++ compilation and name as the run command, along with args
+            # Pass the script_path for C++ compilation and set output directory as the specific implementation directory
+            args.output_path = output_dir_for_implementation  # Update output path to be unique for each implementation
             run_with_timer(script_path, description=name, is_cpp=True, args=args)
         else:
             # Run Python code
@@ -136,6 +137,7 @@ def main():
         # Display images if the display flag is set and a specific implementation is provided
         if args.display and args.implementation:
             display_images_side_by_side(args.input_path, output_dir_for_implementation)
+
 
 if __name__ == "__main__":
     main()
