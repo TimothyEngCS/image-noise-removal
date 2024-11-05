@@ -1,4 +1,4 @@
-import gaussian
+from gaussian import *
 import argparse
 
 #Main processing function
@@ -27,4 +27,4 @@ if __name__ == "__main__":
     # Process images with the specified parameters
     process_multi(args.input_dir, args.output_dir, args.size, args.sigma, args.display)
 
-#python3 todd-gaussian/parallel-gaussian.py images/input-test/ images/output/ -s 5 -g 1.5
+#python3 todd-gaussian/parallel-gaussian.py -s 5 -g 1.5 images/input-test/ images/output/
