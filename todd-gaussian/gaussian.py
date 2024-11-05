@@ -1,8 +1,11 @@
 import os
+import glob
 import argparse
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
+from multiprocess import Pool
+from functools import partial
 
 # Kernel generation function
 def gaussianKernel(size, sigma):
@@ -58,13 +61,9 @@ def gaussianFilter(image_path, kernel_size, sigma):
 
     return im_filtered.astype(np.uint8)
 
-# Main processing function to handle directories
-def process_images(input_dir, output_dir, kernel_size, sigma, display):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    for filename in os.listdir(input_dir):
-        if filename.endswith(".jpg") or filename.endswith(".png"):
+def process_image(filename, argsT):
+    input_dir, output_dir, kernel_size, sigma, display = argsT
+    if filename.endswith(".jpg") or filename.endswith(".png"):
             image_path = os.path.join(input_dir, filename)
             print(f"Processing {image_path}...")
 
@@ -91,6 +90,31 @@ def process_images(input_dir, output_dir, kernel_size, sigma, display):
                     a.axis("off")
                 plt.show()
 
+
+def process_multi(input_dir, output_dir, kernel_size, sigma, display):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    files = os.listdir(input_dir)
+    #print amount of images
+
+    pool = Pool()
+    argsT = input_dir, output_dir, kernel_size, sigma, display
+    partial_process_image = partial(process_image, argsT=argsT)
+
+    pool.map(partial_process_image, files)
+
+# Main processing function to handle directories
+def process_images(input_dir, output_dir, kernel_size, sigma, display):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    inputs = os.listdir(input_dir)
+    #print amount of images
+    argsT = (input_dir, output_dir, kernel_size, sigma, display)
+    for filename in inputs:
+        process_image(filename, argsT)
+
 # Argument parsing
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Apply Gaussian filter to images in a directory.")
@@ -102,7 +126,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Process images with the specified parameters
-    process_images(args.input_dir, args.output_dir, args.size, args.sigma, args.display)
-
+    #start timer
+    #process_images(args.input_dir, args.output_dir, args.size, args.sigma, args.display)
+    #end timer
+    #start timer
+    process_multi(args.input_dir, args.output_dir, args.size, args.sigma, args.display)
+    #end timer
 
 #python3 todd-gaussian/gaussian.py images/input-test/ images/output/ -s 5 -g 1.5
