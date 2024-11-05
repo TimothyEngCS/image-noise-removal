@@ -99,7 +99,8 @@ def main():
         "timothy-gaussian": "timothy-gaussian/gaussian-parallel.py",
         "john-vega-gaussian": "john-vega-gaussian/Comp535GaussianBlurProj.py",
         "michael-gaussian": "michael-gaussian/PhotoGaussianVF.py",
-        "todd-gaussian": "todd-gaussian/gaussian.py"
+        "todd-gaussian": "todd-gaussian/parallel-gaussian.py",
+        "sequential-gaussian": "todd-gaussian/sequential-gaussian.py"
     }
 
     # Determine which scripts to run based on the implementation argument
