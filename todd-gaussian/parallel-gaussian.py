@@ -7,7 +7,10 @@ def process_multi(input_dir, output_dir, kernel_size, sigma, display):
         os.makedirs(output_dir)
 
     files = os.listdir(input_dir)
-
+    
+    if not kernel_size:
+        kernel_size = int(6 * sigma + 1)
+        
     pool = Pool()
     argsT = input_dir, output_dir, kernel_size, sigma, display
     partial_process_image = partial(process_image, argsT=argsT)
