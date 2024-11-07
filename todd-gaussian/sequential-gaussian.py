@@ -8,6 +8,9 @@ def process_images(input_dir, output_dir, kernel_size, sigma, display):
 
     inputs = os.listdir(input_dir)
 
+    if not kernel_size:
+        kernel_size = int(6 * sigma + 1)
+    
     argsT = (input_dir, output_dir, kernel_size, sigma, display)
     for filename in inputs:
         process_image(filename, argsT)
