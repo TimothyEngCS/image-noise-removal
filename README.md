@@ -45,7 +45,6 @@ python3 blur-benchmarker.py images/input-test/ images/output/ -i <implementation
  - stephen-gaussian
  - timothy-gaussian
  - todd-gaussian
-  - /parallel-gaussian
-  - /sequential-gaussian
+ - sequential-gaussian
  - michael-gaussian
 
