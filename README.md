@@ -9,11 +9,13 @@
 - matplotlib
 - pillow
 - numpy
-- opencv-python -- for michael's implementation
-- multiprocess - for Todd's implementation
+- opencv-python
+- multiprocess
 - scipy
 - argparse
 - concurrent.futures
+- functools for partial
+- multiprocessing
 
 ### C++ for gaussian blur code: 
 - **OpenMP** support (via `libomp` on macOS)
@@ -43,5 +45,7 @@ python3 blur-benchmarker.py images/input-test/ images/output/ -i <implementation
  - stephen-gaussian
  - timothy-gaussian
  - todd-gaussian
+  - /parallel-gaussian
+  - /sequential-gaussian
  - michael-gaussian
 
