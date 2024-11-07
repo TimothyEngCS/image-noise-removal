@@ -10,6 +10,7 @@
 - pillow
 - numpy
 - opencv-python -- for michael's implementation
+- multiprocess - for Todd's implementation
 - scipy
 - argparse
 - concurrent.futures
